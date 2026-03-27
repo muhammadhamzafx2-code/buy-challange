@@ -12,7 +12,8 @@ $type = isset($_GET['type']) ? $_GET['type'] : 'Challenge';
 // Prepare NOWPayments API request
 $data = [
     "price_amount" => $price,
-    "price_currency" => "usd",   // Keep USD; users can pay in any currency
+    "price_currency" => "usd",   // Your plan price is USD
+    "pay_currency" => "usd",     // Required by API (user can still pay in other currencies)
     "order_id" => "XV".rand(10000,99999),
     "order_description" => "$type account - $balance USD",
     "success_url" => SUCCESS_URL,
