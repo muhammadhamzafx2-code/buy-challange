@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>XV Prop Firm</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<header>
+<div class="logo">XV PropFirm</div>
+
+<nav>
+<a href="#">Home</a>
+<a href="#challenge">Challenges</a>
+<a href="#instant">Instant Funding</a>
+<a href="login.html" class="login-btn">Login</a>
+</nav>
+</header>
+
+<section class="hero">
+<h1>Get Funded up to $100,000</h1>
+<p>Trade our capital and keep up to 90% profit</p>
+</section>
+
+<!-- CHALLENGE ACCOUNTS -->
+<section id="challenge">
+<h2>Challenge Accounts</h2>
+
+<div class="pricing">
+
+<div class="card">
+<h3>$1,000</h3>
+<p>$20</p>
+<button onclick="buyPlan('1000','20','challenge')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$2,000</h3>
+<p>$40</p>
+<button onclick="buyPlan('2000','40','challenge')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$3,000</h3>
+<p>$60</p>
+<button onclick="buyPlan('3000','60','challenge')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$5,000</h3>
+<p>$100</p>
+<button onclick="buyPlan('5000','100','challenge')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$10,000</h3>
+<p>$150</p>
+<button onclick="buyPlan('10000','150','challenge')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$20,000</h3>
+<p>$300</p>
+<button onclick="buyPlan('20000','300','challenge')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$50,000</h3>
+<p>$650</p>
+<button onclick="buyPlan('50000','650','challenge')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$100,000</h3>
+<p>$1000</p>
+<button onclick="buyPlan('100000','1000','challenge')">Buy Now</button>
+</div>
+
+</div>
+</section>
+
+
+<!-- INSTANT FUNDING -->
+<section id="instant">
+<h2>Instant Funding</h2>
+
+<div class="pricing">
+
+<div class="card">
+<h3>$1,000</h3>
+<p>$30</p>
+<button onclick="buyPlan('1000','30','instant')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$2,000</h3>
+<p>$50</p>
+<button onclick="buyPlan('2000','50','instant')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$3,000</h3>
+<p>$70</p>
+<button onclick="buyPlan('3000','70','instant')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$5,000</h3>
+<p>$120</p>
+<button onclick="buyPlan('5000','120','instant')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$10,000</h3>
+<p>$170</p>
+<button onclick="buyPlan('10000','170','instant')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$20,000</h3>
+<p>$350</p>
+<button onclick="buyPlan('20000','350','instant')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$50,000</h3>
+<p>$700</p>
+<button onclick="buyPlan('50000','700','instant')">Buy Now</button>
+</div>
+
+<div class="card">
+<h3>$100,000</h3>
+<p>$1100</p>
+<button onclick="buyPlan('100000','1100','instant')">Buy Now</button>
+</div>
+
+</div>
+</section>
+
+
+<script>
+function buyPlan(balance,price,type){
+window.location.href="checkout.html?balance="+balance+"&price="+price+"&type="+type;
+}
+</script>
+
+</body>
+</html>
