@@ -1,150 +1,329 @@
+```html
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>XV Prop Firm</title>
-<link rel="stylesheet" href="style.css">
+<title>XV Prop Firm – Funded Accounts</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Inter',sans-serif;
+}
+
+body{
+background:#0d1117;
+color:white;
+}
+
+/* NAVBAR */
+
+.navbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:20px 40px;
+background:#0b0f14;
+border-bottom:1px solid #1f2937;
+}
+
+.logo{
+font-size:20px;
+font-weight:700;
+color:#00c8ff;
+}
+
+.nav-links a{
+color:white;
+margin-left:25px;
+text-decoration:none;
+font-size:14px;
+opacity:0.8;
+}
+
+.nav-links a:hover{
+opacity:1;
+}
+
+.login-btn{
+background:#00c8ff;
+border:none;
+padding:10px 18px;
+border-radius:6px;
+color:white;
+font-weight:600;
+cursor:pointer;
+margin-left:25px;
+}
+
+/* HERO */
+
+.hero{
+text-align:center;
+padding:60px 20px;
+}
+
+.hero h1{
+font-size:36px;
+margin-bottom:15px;
+}
+
+.hero p{
+opacity:0.7;
+}
+
+/* ACCOUNT CARDS */
+
+.container{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+padding:30px;
+}
+
+.card{
+background:#111827;
+width:260px;
+padding:25px;
+margin:15px;
+border-radius:12px;
+transition:0.3s;
+border:1px solid #1f2937;
+}
+
+.card:hover{
+transform:translateY(-5px);
+border:1px solid #00c8ff;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.price{
+font-size:28px;
+font-weight:700;
+margin:15px 0;
+color:#00c8ff;
+}
+
+button{
+background:#00c8ff;
+border:none;
+padding:12px 20px;
+color:white;
+border-radius:6px;
+cursor:pointer;
+width:100%;
+font-weight:600;
+}
+
+/* FORM */
+
+.form-box{
+display:none;
+background:#111827;
+width:320px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+border:1px solid #1f2937;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+background:#1f2937;
+color:white;
+}
+
+/* LOGIN PAGE */
+
+.login-page{
+display:none;
+text-align:center;
+padding:60px 20px;
+}
+
+.login-box{
+background:#111827;
+width:320px;
+margin:40px auto;
+padding:25px;
+border-radius:12px;
+border:1px solid #1f2937;
+}
+
+.login-box h2{
+margin-bottom:20px;
+}
+
+.small-text{
+font-size:13px;
+opacity:0.7;
+margin-top:10px;
+}
+
+/* SUCCESS PAGE */
+
+.success{
+display:none;
+text-align:center;
+padding:80px 20px;
+}
+
+.success h1{
+color:#00ff9d;
+margin-bottom:20px;
+}
+
+</style>
 </head>
 
 <body>
 
-<header>
-<div class="logo">XV PropFirm</div>
+<!-- NAVBAR -->
+<div class="navbar">
+<div class="logo">XV Prop Firm</div>
 
-<nav>
-<a href="#">Home</a>
-<a href="#challenge">Challenges</a>
-<a href="#instant">Instant Funding</a>
-<a href="login.html" class="login-btn">Login</a>
-</nav>
-</header>
-
-<section class="hero">
-<h1>Get Funded up to $100,000</h1>
-<p>Trade our capital and keep up to 90% profit</p>
-</section>
-
-<!-- CHALLENGE ACCOUNTS -->
-<section id="challenge">
-<h2>Challenge Accounts</h2>
-
-<div class="pricing">
-
-<div class="card">
-<h3>$1,000</h3>
-<p>$20</p>
-<button onclick="buyPlan('1000','20','challenge')">Buy Now</button>
+<div class="nav-links">
+<a href="#" onclick="showHome()">Home</a>
+<a href="#">Funded Accounts</a>
+<a href="#">How it Works</a>
+<a href="#">Contact</a>
+<button class="login-btn" onclick="showLogin()">Login</button>
+</div>
 </div>
 
+<!-- HOME PAGE -->
+<div id="home">
+
+<div class="hero">
+<h1>Buy a Funded Trading Account</h1>
+<p>Choose your account size and start trading instantly</p>
+</div>
+
+<div class="container">
+
 <div class="card">
-<h3>$2,000</h3>
-<p>$40</p>
-<button onclick="buyPlan('2000','40','challenge')">Buy Now</button>
+<h3>$1,000 Account</h3>
+<div class="price">$50</div>
+<button onclick="openForm(50)">Buy Now</button>
 </div>
 
 <div class="card">
-<h3>$3,000</h3>
-<p>$60</p>
-<button onclick="buyPlan('3000','60','challenge')">Buy Now</button>
+<h3>$2,000 Account</h3>
+<div class="price">$100</div>
+<button onclick="openForm(100)">Buy Now</button>
 </div>
 
 <div class="card">
-<h3>$5,000</h3>
-<p>$100</p>
-<button onclick="buyPlan('5000','100','challenge')">Buy Now</button>
+<h3>$5,000 Account</h3>
+<div class="price">$200</div>
+<button onclick="openForm(200)">Buy Now</button>
 </div>
 
 <div class="card">
-<h3>$10,000</h3>
-<p>$150</p>
-<button onclick="buyPlan('10000','150','challenge')">Buy Now</button>
-</div>
-
-<div class="card">
-<h3>$20,000</h3>
-<p>$300</p>
-<button onclick="buyPlan('20000','300','challenge')">Buy Now</button>
-</div>
-
-<div class="card">
-<h3>$50,000</h3>
-<p>$650</p>
-<button onclick="buyPlan('50000','650','challenge')">Buy Now</button>
-</div>
-
-<div class="card">
-<h3>$100,000</h3>
-<p>$1000</p>
-<button onclick="buyPlan('100000','1000','challenge')">Buy Now</button>
+<h3>$10,000 Account</h3>
+<div class="price">$200</div>
+<button onclick="openForm(200)">Buy Now</button>
 </div>
 
 </div>
-</section>
 
-
-<!-- INSTANT FUNDING -->
-<section id="instant">
-<h2>Instant Funding</h2>
-
-<div class="pricing">
-
-<div class="card">
-<h3>$1,000</h3>
-<p>$30</p>
-<button onclick="buyPlan('1000','30','instant')">Buy Now</button>
 </div>
 
-<div class="card">
-<h3>$2,000</h3>
-<p>$50</p>
-<button onclick="buyPlan('2000','50','instant')">Buy Now</button>
+<!-- USER FORM -->
+<div class="form-box" id="form">
+<h2>Enter your details</h2>
+
+<input id="fname" placeholder="First Name">
+<input id="lname" placeholder="Last Name">
+<input id="email" placeholder="Email">
+<input id="phone" placeholder="Phone Number">
+<input id="country" placeholder="Country">
+
+<br><br>
+
+<button onclick="fakePayment()">Continue to Payment</button>
 </div>
 
-<div class="card">
-<h3>$3,000</h3>
-<p>$70</p>
-<button onclick="buyPlan('3000','70','instant')">Buy Now</button>
-</div>
+<!-- LOGIN PAGE -->
+<div class="login-page" id="loginPage">
 
-<div class="card">
-<h3>$5,000</h3>
-<p>$120</p>
-<button onclick="buyPlan('5000','120','instant')">Buy Now</button>
-</div>
+<div class="login-box">
+<h2>Client Login</h2>
 
-<div class="card">
-<h3>$10,000</h3>
-<p>$170</p>
-<button onclick="buyPlan('10000','170','instant')">Buy Now</button>
-</div>
+<input placeholder="Trading Account Number">
+<input placeholder="Password" type="password">
+<input placeholder="Server (e.g. XV-Live-1)">
 
-<div class="card">
-<h3>$20,000</h3>
-<p>$350</p>
-<button onclick="buyPlan('20000','350','instant')">Buy Now</button>
-</div>
+<br><br>
 
-<div class="card">
-<h3>$50,000</h3>
-<p>$700</p>
-<button onclick="buyPlan('50000','700','instant')">Buy Now</button>
-</div>
+<button onclick="showError()">Login</button>
 
-<div class="card">
-<h3>$100,000</h3>
-<p>$1100</p>
-<button onclick="buyPlan('100000','1100','instant')">Buy Now</button>
+<div class="small-text">
+Account not found? Purchase a funded account first.
 </div>
 
 </div>
-</section>
 
+</div>
+
+<!-- SUCCESS PAGE -->
+<div class="success" id="successPage">
+
+<h1>Payment Successful</h1>
+<p>Your funded account will be sent to your email within 2 working days.</p>
+<br>
+<p>If not received, contact support:</p>
+<p><b>support.xvpropfirm@gmail.com</b></p>
+
+</div>
 
 <script>
-function buyPlan(balance,price,type){
-window.location.href="checkout.html?balance="+balance+"&price="+price+"&type="+type;
+
+let price = 0;
+
+function openForm(p){
+price = p;
+document.getElementById("form").style.display="block";
+window.scrollTo({ top: 900, behavior: 'smooth' });
 }
+
+function showLogin(){
+document.getElementById("home").style.display="none";
+document.getElementById("loginPage").style.display="block";
+}
+
+function showHome(){
+document.getElementById("loginPage").style.display="none";
+document.getElementById("home").style.display="block";
+}
+
+function showError(){
+alert("Account does not exist. Please purchase a funded account first.");
+}
+
+function fakePayment(){
+
+document.getElementById("home").style.display="none";
+document.getElementById("form").style.display="none";
+document.getElementById("successPage").style.display="block";
+
+}
+
 </script>
 
 </body>
 </html>
+```
