@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Checkout</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+<div class="form-box">
+<h2>Complete Your Order</h2>
+
+<form action="php/save_user.php" method="POST">
+
+<input type="text" name="firstname" placeholder="First Name" required>
+<input type="text" name="lastname" placeholder="Last Name" required>
+<input type="email" name="email" placeholder="Email" required>
+<input type="text" name="phone" placeholder="Phone Number" required>
+<input type="date" name="dob" required>
+
+<select name="country" required>
+<option value="">Select Country</option>
+<option>Nigeria</option>
+<option>Kenya</option>
+<option>Ghana</option>
+<option>UK</option>
+<option>USA</option>
+</select>
+
+<input type="hidden" name="balance" id="balance">
+<input type="hidden" name="price" id="price">
+<input type="hidden" name="type" id="type">
+
+<button type="submit">Proceed to Payment</button>
+
+</form>
+</div>
+
+<script>
+const params=new URLSearchParams(window.location.search);
+document.getElementById("balance").value=params.get("balance");
+document.getElementById("price").value=params.get("price");
+document.getElementById("type").value=params.get("type");
+</script>
+
+</body>
+</html>
