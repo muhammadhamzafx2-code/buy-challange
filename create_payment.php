@@ -1,6 +1,9 @@
 <?php
 require "config.php";
 
+// Disable any accidental output
+ob_start();
+
 // Get data from previous page
 $price = isset($_GET['price']) ? (float)$_GET['price'] : 0;
 $email = isset($_GET['email']) ? $_GET['email'] : '';
@@ -10,8 +13,7 @@ $type = isset($_GET['type']) ? $_GET['type'] : 'Challenge';
 // Prepare NOWPayments API request
 $data = [
     "price_amount" => $price,
-    "price_currency" => "usd",   // Keep USD, NOWPayments allows user to pay in any currency automatically
-    "pay_currency" => "usdt",    // Optional: can be left empty, users can still pay with card or other crypto
+    "price_currency" => "usd",   // Keep USD; NOWPayments allows any currency
     "order_id" => "XV".rand(10000,99999),
     "order_description" => "$type account - $balance USD",
     "success_url" => SUCCESS_URL,
@@ -19,7 +21,7 @@ $data = [
     "buyer_email" => $email
 ];
 
-// Initialize cURL
+// cURL request
 $curl = curl_init();
 curl_setopt_array($curl, [
     CURLOPT_URL => "https://api.nowpayments.io/v1/payment",
@@ -36,11 +38,13 @@ $response = curl_exec($curl);
 $http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
 curl_close($curl);
 
-// Decode response
 $result = json_decode($response, true);
 
-// Handle errors first
-if($http_code != 200 || !$result) {
+// Stop output buffering before redirect
+ob_end_clean();
+
+// Check for valid response
+if ($http_code != 200 || !$result) {
     echo "<h2>Payment Error</h2>";
     echo "<p>HTTP code: $http_code</p>";
     echo "<pre>";
@@ -49,22 +53,20 @@ if($http_code != 200 || !$result) {
     exit;
 }
 
-// Redirect to NOWPayments checkout
-if(isset($result['invoice_url']) && !empty($result['invoice_url'])) {
+// Redirect to checkout
+if (!empty($result['invoice_url'])) {
     header("Location: ".$result['invoice_url']);
     exit;
 }
 
-// Fallback: some accounts use 'payment_url' instead
-if(isset($result['payment_url']) && !empty($result['payment_url'])) {
+if (!empty($result['payment_url'])) {
     header("Location: ".$result['payment_url']);
     exit;
 }
 
-// If still nothing, show full response for debugging
-echo "<h2>Payment Error: Unexpected response from NOWPayments</h2>";
+// If no URL, show raw response for debugging
+echo "<h2>Payment Error: Unexpected response</h2>";
 echo "<pre>";
 print_r($result);
 echo "</pre>";
 exit;
-?>
