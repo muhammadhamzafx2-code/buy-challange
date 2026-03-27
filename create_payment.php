@@ -1,56 +1,61 @@
 <?php
 require "config.php";
 
-// Prevent accidental output before header
+// Prevent header errors
 ob_start();
 
-// Get price and type from query
-$price = isset($_GET['price']) ? (float)$_GET['price'] : 0;
-$type = isset($_GET['type']) ? $_GET['type'] : 'Challenge';
-$balance = isset($_GET['balance']) ? $_GET['balance'] : '';
+// Validate price
+if (!isset($_GET['price'])) {
+    die("Price not provided");
+}
 
-// Prepare request for NOWPayments
+$price   = floatval($_GET['price']);
+$type    = $_GET['type'] ?? "Challenge";
+$balance = $_GET['balance'] ?? "";
+
+// Create payment data
 $data = [
     "price_amount" => $price,
-    "price_currency" => "usd",        // Price of plan in USD
-    "order_id" => "XV".rand(10000,99999),
+    "price_currency" => "usd",          // your plan price
+    "pay_currency" => "usdt",           // REQUIRED for your account (crypto only)
+    "order_id" => "XV" . time(),
     "order_description" => "$type account - $balance USD",
-    "success_url" => SUCCESS_URL,     // define in config.php
-    "cancel_url" => CANCEL_URL        // define in config.php
+    "success_url" => SUCCESS_URL,
+    "cancel_url" => CANCEL_URL
 ];
 
-// Send request via cURL
-$curl = curl_init();
-curl_setopt_array($curl, [
-    CURLOPT_URL => "https://api.nowpayments.io/v1/payment",
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_HTTPHEADER => [
-        "x-api-key: ".NOWPAY_API_KEY,
-        "Content-Type: application/json"
-    ],
-    CURLOPT_POST => true,
-    CURLOPT_POSTFIELDS => json_encode($data)
+// Start cURL
+$ch = curl_init("https://api.nowpayments.io/v1/payment");
+
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POST, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json",
+    "x-api-key: " . NOWPAY_API_KEY
 ]);
 
-$response = curl_exec($curl);
-$http_code = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-curl_close($curl);
+$response = curl_exec($ch);
+$http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+curl_close($ch);
 
 $result = json_decode($response, true);
 
-// Clear output buffer before redirect
+// Clear output buffer (fix Render header error)
 ob_end_clean();
 
-// Check response and redirect
-if ($http_code === 200 && !empty($result['invoice_url'])) {
-    header("Location: ".$result['invoice_url']);
+// If payment created successfully
+if ($http_code == 200 && isset($result['invoice_url'])) {
+    header("Location: " . $result['invoice_url']);
     exit;
 }
 
-// If invoice_url is missing, show debug info
+// If error happens
 echo "<h2>Payment Error</h2>";
-echo "<p>HTTP code: $http_code</p>";
+echo "<p>HTTP Code: $http_code</p>";
 echo "<pre>";
-print_r($result ? $result : $response);
+print_r($result);
 echo "</pre>";
 exit;
+?>
