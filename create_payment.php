@@ -1,26 +1,25 @@
 <?php
 require "config.php";
 
-// Disable output to avoid header warnings
+// Prevent accidental output before header
 ob_start();
 
-// Get data from previous page
+// Get price and type from query
 $price = isset($_GET['price']) ? (float)$_GET['price'] : 0;
-$balance = isset($_GET['balance']) ? $_GET['balance'] : '';
 $type = isset($_GET['type']) ? $_GET['type'] : 'Challenge';
+$balance = isset($_GET['balance']) ? $_GET['balance'] : '';
 
-// Prepare NOWPayments API request
+// Prepare request for NOWPayments
 $data = [
     "price_amount" => $price,
-    "price_currency" => "usd",   // Your plan price is USD
-    "pay_currency" => "usd",     // Required by API (user can still pay in other currencies)
+    "price_currency" => "usd",        // Price of plan in USD
     "order_id" => "XV".rand(10000,99999),
     "order_description" => "$type account - $balance USD",
-    "success_url" => SUCCESS_URL,
-    "cancel_url" => CANCEL_URL
+    "success_url" => SUCCESS_URL,     // define in config.php
+    "cancel_url" => CANCEL_URL        // define in config.php
 ];
 
-// cURL request
+// Send request via cURL
 $curl = curl_init();
 curl_setopt_array($curl, [
     CURLOPT_URL => "https://api.nowpayments.io/v1/payment",
@@ -39,33 +38,19 @@ curl_close($curl);
 
 $result = json_decode($response, true);
 
-// Stop output buffering before redirect
+// Clear output buffer before redirect
 ob_end_clean();
 
-// Check for valid response
-if ($http_code != 200 || !$result) {
-    echo "<h2>Payment Error</h2>";
-    echo "<p>HTTP code: $http_code</p>";
-    echo "<pre>";
-    print_r($result ? $result : $response);
-    echo "</pre>";
-    exit;
-}
-
-// Redirect to checkout
-if (!empty($result['invoice_url'])) {
+// Check response and redirect
+if ($http_code === 200 && !empty($result['invoice_url'])) {
     header("Location: ".$result['invoice_url']);
     exit;
 }
 
-if (!empty($result['payment_url'])) {
-    header("Location: ".$result['payment_url']);
-    exit;
-}
-
-// If no URL, show raw response for debugging
-echo "<h2>Payment Error: Unexpected response</h2>";
+// If invoice_url is missing, show debug info
+echo "<h2>Payment Error</h2>";
+echo "<p>HTTP code: $http_code</p>";
 echo "<pre>";
-print_r($result);
+print_r($result ? $result : $response);
 echo "</pre>";
 exit;
