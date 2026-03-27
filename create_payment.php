@@ -1,24 +1,22 @@
 <?php
 require "config.php";
 
-// Disable any accidental output
+// Disable output to avoid header warnings
 ob_start();
 
 // Get data from previous page
 $price = isset($_GET['price']) ? (float)$_GET['price'] : 0;
-$email = isset($_GET['email']) ? $_GET['email'] : '';
 $balance = isset($_GET['balance']) ? $_GET['balance'] : '';
 $type = isset($_GET['type']) ? $_GET['type'] : 'Challenge';
 
 // Prepare NOWPayments API request
 $data = [
     "price_amount" => $price,
-    "price_currency" => "usd",   // Keep USD; NOWPayments allows any currency
+    "price_currency" => "usd",   // Keep USD; users can pay in any currency
     "order_id" => "XV".rand(10000,99999),
     "order_description" => "$type account - $balance USD",
     "success_url" => SUCCESS_URL,
-    "cancel_url" => CANCEL_URL,
-    "buyer_email" => $email
+    "cancel_url" => CANCEL_URL
 ];
 
 // cURL request
